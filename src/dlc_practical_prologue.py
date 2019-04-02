@@ -145,3 +145,4 @@ def generate_pair_sets(nb):
            mnist_to_pairs(nb, test_input, test_target)
 
 ######################################################################
+
