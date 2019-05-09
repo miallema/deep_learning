@@ -11,6 +11,7 @@ if __name__ == '__main__' :
     ## Create samples
     nb = 1000
     train_input, train_labels, train_classes, test_input, test_labels, test_classes = prologue.generate_pair_sets(nb)
+    _, _, _, validation_input, validation_labels, validation_classes = prologue.generate_pair_sets(nb)
 
     model_IDs = ['WeightSharing', 'No WeightSharing']
 
@@ -21,11 +22,11 @@ if __name__ == '__main__' :
         # with auxiliary
         auxiliary = True
         hyperparam_tensor_aux = process.hyperparam_tuning(model_ID, auxiliary, train_input, train_classes, train_labels,\
-                                                    test_input, test_classes, test_labels)
+                                                    validation_input, validation_classes, validation_labels)
         # without auxiliary
         auxiliary = False
         hyperparam_tensor = process.hyperparam_tuning(model_ID, auxiliary, train_input, train_classes, train_labels,\
-                                                test_input, test_classes, test_labels)
+                                                validation_input, validation_classes, validation_labels)
 
         ## Get best parameters for our model
         #with auxiliary
@@ -55,6 +56,7 @@ if __name__ == '__main__' :
                                                     final_proba_aux, final_kconv1_aux, final_kconv2_aux,\
                                                     final_kconv3_aux, final_kernel1_aux, final_kernel2_aux, \
                                                     final_kernel3_aux, final_eta_aux)
+
         #without auxiliary
         auxiliary = False
         final_kconv1 = int(hyperparam_tensor[index, 0].item())

@@ -14,16 +14,6 @@ def hyperparam_tuning(model_ID, auxiliary, train_input, train_classes, train_lab
     kernels3 = [2, 3]
     etas = [0.100, 0.010, 0.001]
 
-    #miniTEST
-    probas = [0]
-    kconvs1 = [10]
-    kconvs2 = [10]
-    kconvs3 = [10]
-    kernels1 = [3]
-    kernels2 = [2]
-    kernels3 = [2]
-    etas = [0.100]
-
     nb_combos = len(probas) * len(kconvs1) * len(kconvs2) * len(kconvs1) * len(kernels1) * len(kernels1) * len(
         kernels1) * len(etas)
     print("Number of model combinations explored during hyperparameter optimization: %d" %(nb_combos))
@@ -95,9 +85,6 @@ def model_performance_eval(model_ID, train_input, train_classes, train_labels, \
     #empty shells for errors: 6 accuracies to save for 10 rounds
     errors_tensor = torch.zeros([10,6], dtype=torch.float32)
     rounds = range(10)
-
-    #miniTEST
-    rounds =range(2)
 
     loss_per_round = torch.zeros([len(rounds), fc.nb_epoch])
     for r in rounds:

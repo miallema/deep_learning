@@ -15,6 +15,14 @@ def plot_results(error_tensor_aux, error_tensor, model_ID):
     errors_test_train = np.stack((error_matrix_aux[:, 0], error_matrix_aux[:, 3], \
                                   error_matrix[:, 0], error_matrix[:, 3]), axis=1)
 
+    print('Without Auxiliary: Mean Error Comparison for Test set is {} %, and for Train set is {} %'
+          .format(np.mean(error_matrix[:, 0]), np.mean(error_matrix[:, 3])))
+
+    print('With Auxiliary: Mean Error Comparison for Test set is {} %, and for Train set is {} %'
+          .format(np.mean(error_matrix_aux[:, 0]), np.mean(error_matrix_aux[:, 3])))
+    print('With Auxiliary: Mean Error Number 1 for Test set is {} %, and for Number2 Test set is {} %'
+          .format(np.mean(error_matrix_aux[:, 1]), np.mean(error_matrix_aux[:, 2])))
+
     # formatting of the texts on the images
     matplotlib.rc('xtick', labelsize=16)
     matplotlib.rc('ytick', labelsize=16)
