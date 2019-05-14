@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def plot_results(error_tensor_aux, error_tensor, model_ID):
+    '''plot_results takes as input tensors of errors considering or not an auxilliary loss and an ID model indicating if the model shared weights or not. The function creates boxplots of the errors and save them in a figures directory'''
+    
     # convert to numpy matrices for an easier handling
     error_matrix_aux = error_tensor_aux.numpy()
     error_matrix = error_tensor.numpy()
@@ -31,7 +33,6 @@ def plot_results(error_tensor_aux, error_tensor, model_ID):
     matplotlib.rc('xtick', labelsize=16)
     matplotlib.rc('ytick', labelsize=16)
 
-
     plt.figure(figsize=(15, 7))
     plt.boxplot(errors_test[:, 0:4])
     x = np.array([1, 2, 3, 4])
@@ -54,7 +55,9 @@ def plot_results(error_tensor_aux, error_tensor, model_ID):
     plt.savefig('figures/%s train_test.png' %(model_ID))
 
 def plot_learning(loss_per_round_aux, loss_per_round, model_ID):
-
+    '''plot_learning takes as input tensors of errors per rounds considering or not an auxilliary loss and an ID model indicating if the model shared weights or not. The function creates plots of the errors across the number of epochs and save them in a figures directory'''
+    
+    #take the mean and standard deviation over all rounds for each epoch
     losses_aux = torch.mean(loss_per_round_aux, dim=0)
     losses = torch.mean(loss_per_round, dim=0)
 
@@ -70,6 +73,7 @@ def plot_learning(loss_per_round_aux, loss_per_round, model_ID):
     matplotlib.rc('xtick', labelsize=16)
     matplotlib.rc('ytick', labelsize=16)
 
+    #Plot
     plt.figure(figsize=(15, 7))
     plt.plot(range(1, 26), mean_aux, 'b-', label='WITH Auxiliary Losses')
     plt.plot(range(1, 26), mean_aux, 'ro')

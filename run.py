@@ -32,13 +32,13 @@ if __name__ == '__main__' :
         #with auxiliary
         value_aux, index_aux = torch.min(hyperparam_tensor_aux[:, 9], 0)
         print('Parameters with auxiliary loss:')
-        print(hyperparam_tensor_aux[index_aux,:])
+        print(hyperparam_tensor_aux[index_aux, :])
         #without
         value, index = torch.min(hyperparam_tensor[:, 9], 0)
         print('Parameters without auxiliary loss:')
         print(hyperparam_tensor[index, :])
 
-        ## 10+ rounds to evaluate our model
+        ## 10 rounds to evaluate our model
 
         #with auxiliary
         auxiliary = True
@@ -51,6 +51,7 @@ if __name__ == '__main__' :
         final_proba_aux = hyperparam_tensor_aux[index_aux, 6].item()
         final_eta_aux = hyperparam_tensor_aux[index_aux, 7].item()
 
+        # Evaluation of the final model
         error_tensor_aux, loss_per_round_aux = process.model_performance_eval(model_ID, train_input, train_classes, train_labels, \
                                                     test_input, test_classes, test_labels, auxiliary,\
                                                     final_proba_aux, final_kconv1_aux, final_kconv2_aux,\
@@ -68,6 +69,7 @@ if __name__ == '__main__' :
         final_proba = hyperparam_tensor[index, 6].item()
         final_eta = hyperparam_tensor[index, 7].item()
 
+        # Evaluation of the final model
         error_tensor, loss_per_round = process.model_performance_eval(model_ID, train_input, train_classes, train_labels, \
                                                 test_input, test_classes, test_labels, auxiliary, \
                                                 final_proba, final_kconv1, final_kconv2, final_kconv3, \
