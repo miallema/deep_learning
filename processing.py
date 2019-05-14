@@ -13,29 +13,17 @@ def hyperparam_tuning(model_ID, auxiliary, train_input, train_classes, train_lab
     The function perfoms an hyperparameter tuning for the type of model considered and returns a tensor referencing all errors for each combination of hyperparameters defined in the function.'''
     #hyperparameters to be tuned
     #Proportions of dropout
-    #probas = [0, 0.25, 0.5]
+    probas = [0, 0.25, 0.5]
     #numbers of filters for the convolutions
-    #kconvs1 = [10, 30, 60]
-    #kconvs2 = [10, 30, 60]
-    #kconvs3 = [10, 30, 60]
+    kconvs1 = [10, 30, 60]
+    kconvs2 = [10, 30, 60]
+    kconvs3 = [10, 30, 60]
     #size of the squared kernel 
-    #kernels1 = [3, 5]
-    #kernels2 = [2, 3]
-    #kernels3 = [2, 3]
+    kernels1 = [3, 5]
+    kernels2 = [2, 3]
+    kernels3 = [2, 3]
     #Size of learning step
-    #etas = [0.100, 0.010, 0.001]
-    
-    probas = [0]
-    #numbers of filters for the convolutions
-    kconvs1 = [10]
-    kconvs2 = [10]
-    kconvs3 = [10]
-    #size of the squared kernel 
-    kernels1 = [3]
-    kernels2 = [2]
-    kernels3 = [2]
-    #Size of learning step
-    etas = [0.100]
+    etas = [0.100, 0.010, 0.001]
 
     #number of combinations of hyperparameters explored
     nb_combos = len(probas) * len(kconvs1) * len(kconvs2) * len(kconvs1) * len(kernels1) * len(kernels1) * len(
