@@ -2,6 +2,7 @@ import torch
 import model_no_sharedweights as mnsw
 import model_sharedweights as msw
 import functions as fc
+from time import time
 
 def hyperparam_tuning(model_ID, auxiliary, train_input, train_classes, train_labels, test_input, test_classes, test_labels):
     '''The function hyperparam_tuning takes as input : 
@@ -11,6 +12,7 @@ def hyperparam_tuning(model_ID, auxiliary, train_input, train_classes, train_lab
     - their labels (indicating the comparison of the two images, a 1000x1 tensor) 
     - and classes (indicating the number represented by each image, a 1000x2 tensor)
     The function perfoms an hyperparameter tuning for the type of model considered and returns a tensor referencing all errors for each combination of hyperparameters defined in the function.'''
+
     #hyperparameters to be tuned
     #Proportions of dropout
     probas = [0, 0.25, 0.5]
@@ -24,6 +26,7 @@ def hyperparam_tuning(model_ID, auxiliary, train_input, train_classes, train_lab
     kernels3 = [2, 3]
     #Size of learning step
     etas = [0.100, 0.010, 0.001]
+    
 
     #number of combinations of hyperparameters explored
     nb_combos = len(probas) * len(kconvs1) * len(kconvs2) * len(kconvs1) * len(kernels1) * len(kernels1) * len(
@@ -55,7 +58,7 @@ def hyperparam_tuning(model_ID, auxiliary, train_input, train_classes, train_lab
                                     #training of the models
                                     fc.train_model(model, auxiliary, train_input, train_classes, train_labels, fc.nb_epoch, \
                                                 eta, kernel1, kernel2, kernel3, kconv3)
-
+                                    
                                     # Calculate Train and Test error percentages
                                     #Train
                                     errors_num0_train, errors_num1_train, errors_comparison_train = \
@@ -119,10 +122,14 @@ def model_performance_eval(model_ID, train_input, train_classes, train_labels, \
             final_model = mnsw.Net_NoSharedWeights(final_proba, final_kconv1, final_kconv2, final_kconv3, \
                                                    final_kernel1, final_kernel2, final_kernel3)
 
+        start = time()
         loss_per_epochs = fc.train_model(final_model, auxiliary, train_input_shuffled, train_classes_shuffled, train_labels_shuffled, fc.nb_epoch, \
                                                         final_eta, final_kernel1, final_kernel2, final_kernel3, \
                                                         final_kconv3)
-
+        end = time ()
+        
+        num_parameters = sum(p.numel() for p in final_model.parameters())
+       
         #Calculate Train and Test error percentages
         #Train
         errors_num0_train, errors_num1_train, errors_comparison_train = \
@@ -141,4 +148,7 @@ def model_performance_eval(model_ID, train_input, train_classes, train_labels, \
                                         errors_comparison_train, errors_num0_train, errors_num1_train])
         loss_per_round[r, :] = loss_per_epochs.squeeze()
 
+    print('time needed to train the current model : ', end-start, ' s ')
+    print('number of parameters of the model : ', num_parameters)
+           
     return errors_tensor, loss_per_round
