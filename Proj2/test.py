@@ -6,6 +6,7 @@ from optimizers import SGD
 from torch import nn, optim, empty
 
 
+#Model Parameters
 rounds = 10
 n_epochs = 100
 batch_size = 100
@@ -37,6 +38,7 @@ times_torch_adam = []
 prediction_torch_adam = []
 losses_torch_adam = empty(rounds, n_epochs).zero_()
 
+# Accumulation of all 10*1000 generated test samples
 x_all = []
 for i in range(rounds):
 
@@ -92,7 +94,7 @@ for i in range(rounds):
     losses_diy[i] = loss
     times_diy.append(time_taken)
     errors_diy.append(error)
-    prediction_diy.append(prediction)
+    prediction_diy += list(prediction)
 
     # ---------------------------------------------------------------------------------------------------------------- #
     # Pytorch dropout mini batch SGD
@@ -117,7 +119,7 @@ for i in range(rounds):
     losses_torch[i] = loss
     times_torch.append(time_taken)
     errors_torch.append(error)
-    prediction_torch.append(prediction)
+    prediction_torch += list(prediction)
 
     # ---------------------------------------------------------------------------------------------------------------- #
     # Pytorch Adam
@@ -142,10 +144,11 @@ for i in range(rounds):
     losses_torch_adam[i] = loss
     times_torch_adam.append(time_taken)
     errors_torch_adam.append(error)
-    prediction_torch_adam.append(prediction)
+    prediction_torch_adam += list(prediction)
 
     # ---------------------------------------------------------------------------------------------------------------- #
 
+#Plots
 losses = [losses_diy_dropout, losses_diy, losses_torch, losses_torch_adam]
 plot_learning(losses, '../figures/losses_diy.pdf')
 

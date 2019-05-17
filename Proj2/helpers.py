@@ -4,12 +4,16 @@ import math
 from time import time
 
 
+#Function basically copied from practical session. We use the torch object Tensor here, but only here and not in
+#the mini-framework !
 def generate_disc_set(nb):
     data_input = empty(size=(nb, 2)).uniform_(-1, 1)
     target = Tensor([[1, 0] if math.sqrt(x[0]**2 + x[1]**2) <= math.sqrt(2/math.pi) else [0, 1] for x in data_input])
     return data_input, target
 
 
+#Train method very heavily inspired by train methods written in the practical session. We tried to implement the 
+#mini-framework such that the train method for the diy version and the PyTorch version would be maximally similar.
 def train_model_diy(n_epochs, x_train, model, criterion, y_train, optimizer, batch_size):
     loss_vector = empty(n_epochs)
     for e in range(n_epochs):
@@ -24,6 +28,7 @@ def train_model_diy(n_epochs, x_train, model, criterion, y_train, optimizer, bat
     return loss_vector
 
 
+#Train method for PyTorch, basically copied from practical session.
 def train_model_pytorch(n_epochs, x_train, model, criterion, y_train, optimizer, batch_size):
     loss_vector = empty(n_epochs)
     for e in range(n_epochs):
@@ -40,6 +45,7 @@ def train_model_pytorch(n_epochs, x_train, model, criterion, y_train, optimizer,
     return loss_vector
 
 
+#Method to compute the number of errors, again basically copied from practical session. 
 def compute_nb_errors(data_input, data_target, model, batch_size):
     n_misclassified = 0
     num_samples = data_input.size(0)
@@ -55,6 +61,9 @@ def compute_nb_errors(data_input, data_target, model, batch_size):
     return error, prediction
 
 
+#In order to keep the test.py file clean, we further implemented this train_eval function, which measures
+#the time taken for training, then calculates the number of test errors and returns the loss, the error,
+#the time and the predictions.
 def train_eval(n_epochs, model, criterion, optimizer, pytorch, x_train, y_train, x_test, y_test, batch_size):
     start = time()
     model.train()
@@ -62,7 +71,7 @@ def train_eval(n_epochs, model, criterion, optimizer, pytorch, x_train, y_train,
         torch.set_grad_enabled(True)
         loss_vector = train_model_pytorch(n_epochs, x_train, model, criterion, y_train, optimizer, batch_size)
     else:
-        torch.set_grad_enabled(True)
+        torch.set_grad_enabled(False)
         loss_vector = train_model_diy(n_epochs, x_train, model, criterion, y_train, optimizer, batch_size)
     end = time()
     model.eval()

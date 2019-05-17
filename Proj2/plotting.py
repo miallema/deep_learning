@@ -4,17 +4,16 @@ import matplotlib
 import numpy as np
 
 
+#Plot the loss over 10 rounds keeping track of the mean and std. 
 def plot_learning(losses, fname):
     labels_mean = ['Mean diy dropout',
                    'Mean diy no dropout',
                    'Mean torch dropout SGD',
                    'Mean torch dropout adam']
-
     labels_std = ['Std diy dropout',
                   'Std diy no dropout',
                   'Std torch dropout SGD',
                   'Std torch dropout adam']
-
     colors = ['green', 'blue', 'yellow', 'red']
     r = np.shape(losses[0])[1]
     plt.figure(figsize=[12, 7])
@@ -30,6 +29,7 @@ def plot_learning(losses, fname):
     plt.savefig(fname)
 
 
+#Plot the predictions in the 2-d plane with colorcode according to label.
 def plot_points(x_test, prediction, fname):
     x_test = zip(*x_test)
     x_test = [list(x) for x in x_test]
@@ -40,6 +40,7 @@ def plot_points(x_test, prediction, fname):
     plt.savefig(fname)
 
 
+#Boxplots of time
 def plot_time(times, fname):
     plt.figure(figsize=(12, 7))
     plt.boxplot(times)
@@ -50,6 +51,7 @@ def plot_time(times, fname):
     plt.savefig(fname)
 
 
+#Boxplots of errors
 def plot_errors(errors, fname):
     plt.figure(figsize=(12, 7))
     plt.boxplot(errors)
